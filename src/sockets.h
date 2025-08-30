@@ -2,8 +2,8 @@
 #define SOCKETS_H_
 
 #define LOG_ERROR(msg) perror(msg)
-#define LOG_INFO(msg) fprintf(stderr, "[INFO]: %s\n", msg)
-#define LOG_WARNING(msg) fprintf(stderr, "\033[33m[WARNING]: %s\033[0m\n", msg)
+#define LOG_INFO(msg) fprintf(stderr, "[INFO]: %s", msg)
+#define LOG_WARNING(msg) fprintf(stderr, "\033[33m[WARNING]: %s\033[0m", msg)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,5 +67,7 @@ void eliminar_paquete(t_paquete *paquete);
 void crear_buffer(t_paquete *paquete);
 
 void saludar();
+
+char* puerto_param(int argc, char* argv[]);
 
 #endif

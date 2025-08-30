@@ -178,3 +178,14 @@ void saludar()
     printf("Mundo \n");
     LOG_WARNING("WARNING XXXX");
 }
+
+char* puerto_param(int argc, char* argv[])
+{
+    if (argc < 2)
+    {
+        LOG_INFO("No se ha pasado puerto como parámetro. Utilizando el puerto 8000 por defecto.\n");
+        return "8000";
+    }
+
+    return argv[1];
+}

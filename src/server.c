@@ -29,16 +29,29 @@ int main(int argc, char* argv[])
 
 void* handler_cliente(void* client_socket)
 {
-    sleep(20);
-}
+    int socket = *(int*)client_socket;
 
-char* puerto_param(int argc, char* argv[])
-{
-    if (argc < 2)
+    char buffer[1024];
+    int bytes;
+
+    while (true)
     {
-        LOG_INFO("No se ha pasado puerto como parámetro. Utilizando el puerto 8000 por defecto.");
-        return "8000";
+        bytes = recv(socket, &buffer, sizeof(buffer), 0);
+
+        if (bytes < 0)
+        {
+            LOG_WARNING("Ha ocurrido un error al recibir los datos.");
+            fprintf(stderr, "Socket: %d", socket);
+        }
+        
+        if (bytes == 0)
+        {
+            LOG_INFO("Cliente cerrado correctamente.");
+            fprintf(stderr, "Socket: %d", socket);
+        }
+
+        LOG_INFO("Peticion recibida: ");
+        // fprintf(stderr, "%s", buffer);
     }
 
-    return argv[1];
 }
