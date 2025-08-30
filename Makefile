@@ -7,14 +7,19 @@ BIN_DIR = bin
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
-TARGET = $(BIN_DIR)/server
+
+SERVER = $(BIN_DIR)/server
+CLIENT = $(BIN_DIR)/client
 
 .PHONY: all clean
 
-all: $(TARGET)
+all: $(SERVER) $(CLIENT)
 
-$(TARGET): $(OBJS) | $(BIN_DIR)
-	$(CC) $(OBJS) -o $(TARGET)
+$(SERVER): $(OBJ_DIR)/server.o $(OBJ_DIR)/sockets.o | $(BIN_DIR)
+	$(CC) $^ -o $@
+
+$(CLIENT): $(OBJ_DIR)/client.o $(OBJ_DIR)/sockets.o | $(BIN_DIR)
+	$(CC) $^ -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@

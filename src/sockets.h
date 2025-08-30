@@ -3,6 +3,7 @@
 
 #define LOG_ERROR(msg) perror(msg)
 #define LOG_INFO(msg) fprintf(stderr, "[INFO]: %s\n", msg)
+#define LOG_WARNING(msg) fprintf(stderr, "\033[33m[WARNING]: %s\033[0m\n", msg)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +13,8 @@
 #include <netdb.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
+#include <pthread.h>
 
 typedef enum
 {

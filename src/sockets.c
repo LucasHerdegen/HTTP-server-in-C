@@ -176,4 +176,5 @@ void saludar()
 {
     LOG_INFO("Hola");
     printf("Mundo \n");
+    LOG_WARNING("WARNING XXXX");
 }
