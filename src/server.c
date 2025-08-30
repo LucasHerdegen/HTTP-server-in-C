@@ -5,7 +5,7 @@ int main(int argc, char* argv[])
 {
     char* server_port = puerto_param(argc, argv);
 
-    int server_socket = iniciar_servidor("8008");
+    int server_socket = iniciar_servidor(server_port);
 
     saludar();
 
@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 
         pthread_t handler_thread;
         pthread_create(&handler_thread, NULL, handler_cliente, (void*)client_socket);
+        pthread_detach(handler_thread);
     }
 
     return 0;
