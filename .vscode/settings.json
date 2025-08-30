@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "sockets.h": "c"
+        "sockets.h": "c",
+        "unistd.h": "c"
     }
 }
