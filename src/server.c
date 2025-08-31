@@ -176,13 +176,13 @@ HttpResponse procesar_request(HttpRequest request)
         response.status_code = 200;
         strcpy(response.status_text, "OK");
 
-        response.body = strdup("Hello, World!");
+        response.body = strdup("\nHello, World!\n\n");
 
         char content_lenght[50];
         snprintf(content_lenght, sizeof(content_lenght), "Content-Length: %d", (int)strlen(response.body));
         add_header(&response, content_lenght);
         char content_type[50];
-        snprintf(content_type, sizeof(content_type), "Content-Type: %s", "text");
+        snprintf(content_type, sizeof(content_type), "Content-Type: %s", "text/plain");
         add_header(&response, content_type);
         add_header(&response, "Connection: close");
     }
@@ -197,13 +197,13 @@ HttpResponse procesar_request(HttpRequest request)
         struct tm *tiempo_local;
         tiempo_local = localtime(&tiempo_actual_raw);
         response.body = malloc(64);
-        strftime(response.body, 64, "%Y-%m-%d %H:%M:%S", tiempo_local);
+        strftime(response.body, 64, "\n%Y-%m-%d %H:%M:%S\n\n", tiempo_local);
 
         char content_lenght[50];
         snprintf(content_lenght, sizeof(content_lenght), "Content-Length: %d", (int)strlen(response.body));
         add_header(&response, content_lenght);
         char content_type[50];
-        snprintf(content_type, sizeof(content_type), "Content-Type: %s", "time");
+        snprintf(content_type, sizeof(content_type), "Content-Type: %s", "text/plain");
         add_header(&response, content_type);
         add_header(&response, "Connection: close");
     }
@@ -212,6 +212,9 @@ HttpResponse procesar_request(HttpRequest request)
         strcpy(response.version, request.version);
         response.status_code = 404;
         strcpy(response.status_text, "Not Found");
+
+        add_header(&response, "Content-Length: 0");
+        add_header(&response, "Connection: close");
     }
 
     return response;
@@ -221,21 +224,47 @@ char* generar_response(HttpResponse response)
 {
     size_t total_len = 0;
 
-    total_len += strlen(response.version);
-
-    char status_code_string[8];
-    sprintf(status_code_string, "%d", response.status_code);
-    total_len += strlen(status_code_string);
-
+    total_len += strlen(response.version) + 1; // espacio
+    total_len += 3; // status code (ej: 200)
+    total_len += 1; // espacio
     total_len += strlen(response.status_text);
+    total_len += 2; // \r\n
 
-    for (int i = 0; i < response.header_count; i++)
-        total_len += strlen(response.headers[i]);
+    // headers
+    for (int i = 0; i < response.header_count; i++) 
+        total_len += strlen(response.headers[i]) + 2; // header + \r\n
 
-    total_len += strlen(response.body);
-    
-    // ...
+    total_len += 2; // \r\n final
+
+    // body
+    if (response.body)
+        total_len += strlen(response.body);
+
+    char* resp = malloc(total_len + 1);
+    if (!resp) return NULL;
+
+    int offset = 0;
+
+    // status line
+    offset += sprintf(resp + offset, "%s %d %s\r\n",response.version, response.status_code,response.status_text);
+
+    // headers
+    for (int i = 0; i < response.header_count; i++) 
+        offset += sprintf(resp + offset, "%s\r\n", response.headers[i]);
+
+    // línea vacía
+    offset += sprintf(resp + offset, "\r\n");
+
+    // body
+    if (response.body)
+        offset += sprintf(resp + offset, "%s", response.body);
+
+    // null terminator
+    resp[offset] = '\0';
+
+    return resp;
 }
+
 
 void add_header(HttpResponse* response, char* header)
 {
