@@ -14,3 +14,5 @@ void* handler_cliente(void* client_socket);
 HttpRequest parse_request(const char* request);
 
 void parse_headers(const char* request, HttpRequest* req);
+
+void free_request(HttpRequest* req);

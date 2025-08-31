@@ -14,7 +14,8 @@ int main(int argc, char* argv[])
 
         if (*client_socket == -1)
         {
-            LOG_WARNING("No se ha podido conectar el cliente...");
+            LOG_WARNING("No se ha podido conectar el cliente...\n");
+            close(*client_socket);
             continue;
         }
 
@@ -70,9 +71,7 @@ void* handler_cliente(void* client_socket)
     parse_headers(buffer, &req);
 
     for (int i = 0; i < req.header_count; i++)
-    {
         fprintf(stderr, "Header[%d]: %s\n", i, req.headers[i]);
-    }
 
     sleep(3);
 
@@ -86,9 +85,11 @@ void* handler_cliente(void* client_socket)
 
     LOG_INFO("Respondiendo con: \n");
     LOG_RESPONSE(resp);
-    send(socket, resp, strlen(resp), 0);
+    send(socket, resp, strlen(resp), MSG_NOSIGNAL);
     
     close(socket);
+    free_request(&req);
+
     return NULL;
 }
 
@@ -127,4 +128,13 @@ void parse_headers(const char* request, HttpRequest* req) {
 
         current = line_end + 2;
     }
+}
+
+void free_request(HttpRequest* req)
+{
+    for (int i = 0; i < req->header_count; i++)
+    {
+        free(req->headers[i]);
+    }
+    free(req->headers);
 }
