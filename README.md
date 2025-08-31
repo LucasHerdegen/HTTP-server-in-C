@@ -43,13 +43,51 @@ HTTP-SERVER-IN-C
 
 ## ⚙️ Compilación y ejecución
 
-Compilar el proyecto:
+1. Compilar el proyecto:
 
 ```bash
 make
-
+```
 Esto generará los binarios en bin/.
 
-Ejecutar el servidor (por defecto en puerto 8000):
+2. Ejecutar el servidor (por defecto en puerto 8000):
 
+```bash
 ./bin/server [PORT]
+```
+
+3. Una vez levantado el servidor, enviar la request:
+```bash
+curl http://localhost:[PORT]/
+curl http://localhost:[PORT]/time
+curl http://localhost:[PORT]/lalala
+```
+
+4. Esperar la respuesta, ej:
+```bash
+HTTP/1.1 200 OK
+Content-Length: 16
+Content-Type: text/plain
+Connection: close
+
+Hello, World!
+```
+
+## 🛠️ Tecnologías utilizadas
+
+- Lenguaje: C (C99)
+
+- Sockets: POSIX TCP/IP
+
+- Concurrencia: pthreads
+
+- Entorno: Linux (probado en Ubuntu/Pop!_OS, debería funcionar en WSL2/macOS).
+
+## 📜 Licencia
+
+Podés usarlo, modificarlo y aprender de él sin restricciones.
+
+## 👨‍💻 Autor
+
+Desarrollado por Lucas 🧑‍💻
+Estudiante de Ingeniería en Sistemas, interesado en programación de bajo nivel, redes y sistemas distribuidos.
