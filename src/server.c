@@ -7,17 +7,19 @@ int main(int argc, char* argv[])
 
     int server_socket = iniciar_servidor(server_port);
 
-    saludar();
-
     while (true)
     {
-        int client_socket = esperar_cliente(server_socket);
+        int* client_socket = malloc(sizeof(int));
+        *client_socket = esperar_cliente(server_socket);
 
-        if (client_socket == -1)
+        if (*client_socket == -1)
         {
             LOG_WARNING("No se ha podido conectar el cliente...");
             continue;
         }
+
+        LOG_INFO("Cliente conectado. Socket: ");
+        fprintf(stderr, "%d\n", *client_socket);
 
         pthread_t handler_thread;
         pthread_create(&handler_thread, NULL, handler_cliente, (void*)client_socket);
@@ -36,22 +38,27 @@ void* handler_cliente(void* client_socket)
 
     while (true)
     {
-        bytes = recv(socket, &buffer, sizeof(buffer), 0);
+        bytes = recv(socket, buffer, sizeof(buffer), 0);
 
         if (bytes < 0)
         {
-            LOG_WARNING("Ha ocurrido un error al recibir los datos.");
-            fprintf(stderr, "Socket: %d", socket);
+            LOG_WARNING("Ha ocurrido un error al recibir los datos. Socket: ");
+            fprintf(stderr, "%d\n", socket);
+            return NULL;
         }
         
         if (bytes == 0)
         {
-            LOG_INFO("Cliente cerrado correctamente.");
-            fprintf(stderr, "Socket: %d", socket);
+            LOG_INFO("Cliente cerrado correctamente. Socket: ");
+            fprintf(stderr, "%d\n", socket);
+            return NULL;
         }
 
         LOG_INFO("Peticion recibida: ");
-        // fprintf(stderr, "%s", buffer);
+        fprintf(stderr, "%s\n", buffer);
+
+        // TODO: MANEJAR PETICION
+        
     }
 
 }
