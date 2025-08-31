@@ -24,19 +24,19 @@ Este proyecto no utiliza librerías externas para manejar HTTP: todo se parsea y
 
 ## 📂 Estructura del proyecto
 
-HTTP-SERVER-IN-C
-├── bin/ # Binarios compilados
-├── obj/ # Archivos objeto intermedios
-├── src/ # Código fuente
-│ ├── client.c
-│ ├── client.h
-│ ├── server.c
-│ ├── server.h
-│ ├── sockets.c
-│ └── sockets.h
-├── .gitignore
-├── Makefile
-└── README.md
+- HTTP-SERVER-IN-C
+- ├── bin/ # Binarios compilados
+- ├── obj/ # Archivos objeto intermedios
+- ├── src/ # Código fuente
+- │ ├── client.c
+- │ ├── client.h
+- │ ├── server.c
+- │ ├── server.h
+- │ ├── sockets.c
+- │ └── sockets.h
+- ├── .gitignore
+- ├── Makefile
+- └── README.md
 
 
 ---
