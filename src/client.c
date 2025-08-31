@@ -19,10 +19,19 @@ int main(int argc, char* argv[])
     LOG_INFO("Se ha conectado al servidor. Socket: ");
     fprintf(stderr, "%d\n", socket);
 
-    while (true)
+    char *req = "GET / HTTP/1.1\r\nHost: localhost\r\n\r\n";
+    send(socket, req, strlen(req), 0);
+
+    char buffer[1024];
+    int bytes = recv(socket, buffer, sizeof(buffer), 0);
+
+    if (bytes <= 0)
     {
-        // TODO: ENVIAR PETICION Y ESPERAR RESPUESTA
+        LOG_ERROR("Se ha producido un error con el servidor al recibir la response. Abortando...\n");
+        exit(1);
     }
+
+    LOG_RESPONSE(buffer);
 
     liberar_conexion(socket);
 

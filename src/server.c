@@ -32,33 +32,42 @@ int main(int argc, char* argv[])
 void* handler_cliente(void* client_socket)
 {
     int socket = *(int*)client_socket;
+    free(client_socket);
 
     char buffer[1024];
     int bytes;
+    
+    bytes = recv(socket, buffer, sizeof(buffer), 0);
 
-    while (true)
+    if (bytes < 0)
     {
-        bytes = recv(socket, buffer, sizeof(buffer), 0);
-
-        if (bytes < 0)
-        {
-            LOG_WARNING("Ha ocurrido un error al recibir los datos. Socket: ");
-            fprintf(stderr, "%d\n", socket);
-            return NULL;
-        }
+        LOG_WARNING("Ha ocurrido un error al recibir los datos. Socket: ");
+        fprintf(stderr, "%d\n", socket);
+        return NULL;
+    }
         
-        if (bytes == 0)
-        {
-            LOG_INFO("Cliente cerrado correctamente. Socket: ");
-            fprintf(stderr, "%d\n", socket);
-            return NULL;
-        }
-
-        LOG_INFO("Peticion recibida: ");
-        fprintf(stderr, "%s\n", buffer);
-
-        // TODO: MANEJAR PETICION
-        
+    if (bytes == 0)
+    {
+        LOG_INFO("Cliente cerrado correctamente. Socket: ");
+        fprintf(stderr, "%d\n", socket);
+        return NULL;
     }
 
+    LOG_INFO("Peticion recibida: ");
+    fprintf(stderr, "%s\n", buffer);
+
+    char *resp = 
+    "HTTP/1.1 200 OK\r\n"
+    "Content-Type: text/plain\r\n"
+    "Content-Length: 12\r\n"
+    "Connection: close\r\n"
+    "\r\n"
+    "Hello World\n";
+
+    LOG_INFO("Respondiendo con: \n");
+    LOG_RESPONSE(resp);
+    send(socket, resp, strlen(resp), 0);
+    
+    close(socket);
+    return NULL;
 }

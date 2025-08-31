@@ -4,6 +4,7 @@
 #define LOG_ERROR(msg) perror(msg)
 #define LOG_INFO(msg) fprintf(stderr, "[INFO]: %s", msg)
 #define LOG_WARNING(msg) fprintf(stderr, "\033[33m[WARNING]: %s\033[0m", msg)
+#define LOG_RESPONSE(msg) fprintf(stderr, "\033[32m%s\033[0m\n", msg)
 
 #include <stdio.h>
 #include <stdlib.h>
