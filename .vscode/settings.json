@@ -3,6 +3,8 @@
         "sockets.h": "c",
         "unistd.h": "c",
         "buffer": "c",
-        "socket.h": "c"
-    }
+        "socket.h": "c",
+        "random": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }

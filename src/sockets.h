@@ -16,6 +16,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <pthread.h>
+#include <time.h>
 
 typedef enum
 {

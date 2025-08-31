@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 
     char buffer[1024];
     int bytes = recv(socket, buffer, sizeof(buffer), 0);
+    buffer[bytes] = '\0';
 
     if (bytes <= 0)
     {
