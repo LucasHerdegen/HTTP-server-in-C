@@ -56,7 +56,7 @@ Esto generará los binarios en bin/.
 ./bin/server [PORT]
 ```
 
-3. Una vez levantado el servidor, enviar la request:
+3. Una vez levantado el servidor, enviar (por ejemplo) alguna de estas requests desde una terminal aparte:
 ```bash
 curl http://localhost:[PORT]/
 curl http://localhost:[PORT]/time
