@@ -75,7 +75,7 @@ Hello, World!
 
 ## 🛠️ Tecnologías utilizadas
 
-- Lenguaje: C (C99)
+- Lenguaje: C
 
 - Sockets: POSIX TCP/IP
 
